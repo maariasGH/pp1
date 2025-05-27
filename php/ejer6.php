@@ -1,6 +1,11 @@
 <html>
     <head>
         <title>Ejericico 6</title>
+        <style>
+            table {
+                text-align : center;
+            }
+        </style>
     </head>
     <body>
         <?php
