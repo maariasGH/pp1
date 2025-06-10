@@ -6,9 +6,32 @@
         <?php
            echo "Los Valores ingresados en el formulario son:";
            echo "<br>";
-           echo "Nombre: ".$_GET["nombre"];
+           try {
+                if (isset($_GET["nombre"])) {
+                   if ($_GET["nombre"]!="") {
+                    echo "Nombre: ".$_GET["nombre"];
+                   } else {
+                    throw new Exception("El Nombre Esta Vacio");
+                   }
+                }
+           } catch (Exception $e) {
+                echo "El Nombre esta vacio";
+           }
+           
            echo "<br>";
-           echo "Apellido: ".$_GET["apellido"];
+           try {
+               if (isset($_GET["apellido"])) {
+                    if ($_GET["apellido"]!="") {
+                        echo "Apellido: ".$_GET["apellido"];
+                    } else {
+                        throw new Exception("El Apellido Esta Vacio");
+                    }
+                }
+           } catch (Exception $e) {
+                echo "El Apellido esta vacio";
+           }
+           
+           
            echo "<br>";
            if ($_GET["sexo"]=="on") {
             echo "Sexo: NB";
