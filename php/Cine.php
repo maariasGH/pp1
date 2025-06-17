@@ -6,17 +6,10 @@
        {
        }
        public function addSala(Sala $s) {
-        array_push($this->salas,$s);
+           array_push($this->salas,$s);
        }
        public function vender($cant,$nro) {
-            switch ($nro) {
-                case 1:
-                    $this->salas[0]->ocuparButacas($cant);
-                case 2:
-                    $this->salas[1]->ocuparButacas($cant);
-                case 3:
-                    $this->salas[2]->ocuparButacas($cant);
-            }
+            $this->salas[$nro-1]->ocuparButacas($cant);
        }
        public function mostrarOcupacion() {
             echo "<br>";
