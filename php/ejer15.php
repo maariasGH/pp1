@@ -14,9 +14,19 @@
             $ci->addSala($s1);
             $ci->addSala($s2);
             $ci->addSala($s3);
-            for ($x=0;$x<100;$x++) {
-                echo "Venta Nro ".($x+1);
-                $ci->vender(rand(1,2),rand(1,3));
+            try {
+                for ($x=0;$x<100;$x++) {
+                    if($x>0) {
+                        echo "<br>";
+                    }
+                    echo "Venta Nro ".($x+1);
+                    $sala=rand(1,3);
+                    $ci->vender(rand(1,2),$sala);
+                }
+            } catch (Exception $e) {
+                echo "<br>";
+                echo "No hay suficientes lugares disponibles en La Sala ".$sala;
+                echo "<br>";
             }
             $ci->mostrarOcupacion();
         ?>
