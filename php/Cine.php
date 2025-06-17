@@ -6,7 +6,7 @@
        {
        }
        public function addSala(Sala $s) {
-            array_push($this->salas,$s);
+           array_push($this->salas,$s);
        }
        public function vender($cant,$nro) {
             $this->salas[$nro-1]->ocuparButacas($cant);
