@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Ejercicio1</title>
+</head>
+<body>
+    <ul>
+    {% for p in paises %}
+        Pais Numero: {{loop.index}}
+        <li>
+        Nombre: {{p.nombre}}
+        </li>
+        <li>
+        Lengua: {{p.lengua}}
+        </li>
+        <li>
+        Moneda: {{p.moneda}}
+        </li>
+        <br>
+    {% endfor %}
+    </ul>
+</body>
+</html>
