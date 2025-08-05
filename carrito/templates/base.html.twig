@@ -2,14 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="{{asset ('css/estilos.css')}}">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+        <title> My App </title>
+         <link rel="stylesheet" href="{{asset ('css/estilos.css')}}">
     </head>
     <body>
         {% block body %}{% endblock %}
