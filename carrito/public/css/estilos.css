@@ -28,3 +28,10 @@ body {
     font-weight: bold;
     font-size: 24px;
 }
+.productos {
+    display:flex;
+    flex:wrap;
+    justify-content: flex-start;
+    gap: 30px;
+    padding: 20px;
+}
