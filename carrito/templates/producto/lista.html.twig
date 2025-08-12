@@ -10,16 +10,15 @@
         </div>
         <main>
             <h2 class="title"> Lista de Productos </h2>
-            
-            <div class="productos" style="display:flex;gap:20px;flex-wrap: wrap;margin:5px">
+            <div class="productos" >
             {% for producto in productos %}
                 <div class="producto">
                     <img src="{{ producto.imagen }}">
                     <p>{{ producto.nombre }}</p>
                     <p>{{ producto.descripcion }}</p>
-                    <div class="boton_precio" style="display:flex;gap:10px">
-                        <button style="background-color:black;color:white;border-radius:px solid black">Ver Detalles</button>
-                        <p style="font-weight:bold">Precio: {{ producto.precio }}$</p> 
+                    <div class="boton_precio">
+                        <button>Ver Detalles</button>
+                        <p>Precio: {{ producto.precio }}$</p> 
                     </div>
                 </div> 
             {% endfor %}
