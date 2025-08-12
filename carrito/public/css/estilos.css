@@ -23,9 +23,31 @@ body {
     border-radius: 3px;
     font-weight: bold;
 }
-
 .title {
     padding: 20px;
     font-weight: bold;
     font-size: 24px;
+}
+.productos {
+    display:flex;
+    flex-wrap:wrap;
+    gap: 30px;
+    margin: 20px;
+}
+.producto {
+    border: 1px solid black;
+    padding: 20px;
+}
+.boton_precio {
+    display:flex;
+    flex:wrap;
+    gap:10px;
+}
+.boton_precio p {
+    font-weight:bold;
+}
+.boton_precio button {
+    background-color:black;
+    color:white;
+    border-radius:px solid black;
 }

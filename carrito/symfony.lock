@@ -22,7 +22,6 @@
             "./src/Repository/.gitignore"
         ]
     },
-
     "doctrine/doctrine-fixtures-bundle": {
         "version": "4.1",
         "recipe": {
