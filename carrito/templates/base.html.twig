@@ -3,7 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title> My App </title>
-         <link rel="stylesheet" href="{{asset ('css/estilos.css')}}">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
+        {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}

@@ -1,0 +1,65 @@
+/* Estilos base para el login */
+form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  form input[type="text"],
+  form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  form input[type="text"]:focus,
+  form input[type="password"]:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
+    outline: none;
+  }
+  
+  form button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #000000;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #357ab8;
+  }
+  
+  .error-message {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 12px 16px;
+    background-color: #ffe0e0;
+    color: #b00020;
+    border-left: 6px solid #b00020;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+  
