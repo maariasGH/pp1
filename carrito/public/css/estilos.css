@@ -12,6 +12,8 @@ body {
 }
 .header p {
     font-size: 20px;
+    display:flex;
+    flex-wrap:wrap;
 }
 .btn-light {
     background-color: white;
