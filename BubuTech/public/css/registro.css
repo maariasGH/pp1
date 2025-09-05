@@ -1,0 +1,133 @@
+/* Fondo */
+body {
+    margin: 0;
+    padding: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor */
+.registro-container {
+    background: #ffffff;
+    padding: 60px 50px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.2);
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título */
+.registro-container h2 {
+    margin-bottom: 25px;
+    color: #007bff;
+}
+
+/* Grupos */
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+/* Inputs */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cce0ff;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Botón */
+.btn-registrar {
+    padding: 12px;
+    background: #007bff;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+.btn-registrar:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Volver al login */
+.volver-login {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.volver-login a {
+    color: #007bff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Mensajes flash */
+.flash-success {
+    background-color: #ddffdd;
+    color: #007b00;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.flash-error {
+    background-color: #ffdddd;
+    color: #a10000;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Selector de roles múltiple */
+.select-roles {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cce0ff;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 80px; /* más alto para mostrar varias opciones */
+}
+
+.select-roles:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+.hint {
+    font-size: 12px;
+    color: #666;
+}

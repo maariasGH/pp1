@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        {{ parent() }}    
+        <link rel="stylesheet" href="{{ asset('css/subastas.css') }}">
+    {% endblock %}
+    {% block body %}   
+        <main>
+            <h2 class="title">Lista de Subastas</h2>
+
+            <div class="subastas">
+                {% for subasta in subastas %}
+                    <div class="subasta-card">
+                        <div class="subasta-imagen">
+                            {% if subasta.producto.imagen %}
+                                <img src="{{ asset('uploads/productos/' ~ subasta.producto.imagen) }}" alt="{{ subasta.producto.nombre }}">
+                            {% else %}
+                                <img src="{{ asset('images/placeholder.png') }}" alt="Sin imagen">
+                            {% endif %}
+                        </div>
+                        <div class="subasta-info">
+                            <h3>{{ subasta.producto.nombre }}</h3>
+                            <p class="descripcion">{{ subasta.producto.descripcion }}</p>
+                            <p><strong>Precio base:</strong> ${{ subasta.precioBase }}</p>
+                            <p><strong>Categoría:</strong> {{ subasta.categoria ?? 'Sin categoría' }}</p>
+                            <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
+                            <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+                            <a href="{{ path('detalle_subasta', {id: subasta.id}) }}" class="btn-detalle">Ver detalle</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No hay subastas publicadas por el momento.</p>
+                {% endfor %}
+            </div>
+        </main>
+    {% endblock %}

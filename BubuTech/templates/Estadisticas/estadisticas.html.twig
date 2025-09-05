@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+    {% block stylesheets %}
+        {{ parent() }}    
+        <link rel="stylesheet" href="{{ asset('css/estadisticas.css') }}">
+    {% endblock %}
+    {% block body %}         
+        <main>
+            <h2 class="title"> Estadisticas Vendedor</h2>
+            <h2 class="title"> Estadisticas Comrpador</h2>
+        </main>
+    {% endblock %}

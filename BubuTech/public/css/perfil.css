@@ -1,0 +1,83 @@
+body {
+    background: #f0f7ff;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+}
+
+.perfil-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 90, 180, 0.1);
+    animation: fadeIn 0.6s ease;
+}
+
+.perfil-title {
+    text-align: center;
+    font-size: 28px;
+    color: #1565c0;
+    margin-bottom: 30px;
+}
+
+.perfil-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.perfil-avatar {
+    flex: 0 0 120px;
+}
+
+.perfil-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1565c0;
+    box-shadow: 0 3px 10px rgba(0, 90, 180, 0.2);
+}
+
+.perfil-info {
+    flex: 1;
+}
+
+.perfil-info p {
+    font-size: 16px;
+    margin: 8px 0;
+    color: #34495e;
+}
+
+.perfil-info strong {
+    color: #0d47a1;
+}
+
+.perfil-actions {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.btn-salir {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #e53935;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-salir:hover {
+    background: #b71c1c;
+    transform: translateY(-2px);
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}

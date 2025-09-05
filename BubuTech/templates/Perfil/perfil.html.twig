@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="perfil-container">
+    <h2 class="perfil-title">Mi Perfil</h2>
+
+    <div class="perfil-card">
+
+        <div class="perfil-info">
+            <p><strong>Nombre Real</strong> {{ usuario.nombreReal }}</p>
+            <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
+            <p><strong>Nombre de Usuario:</strong> {{ usuario.nombreusuario }}</p>
+            <p><strong>Email:</strong> {{ usuario.email }}</p>
+            <p><strong>Rol(es):</strong> {{ usuario.roles|join(', ') }}</p>
+            <p><strong>DNI:</strong> {{ usuario.dni }}</p>
+            <p><strong>Direccion:</strong> {{ usuario.direccion }}</p>
+        </div>
+    </div>
+
+    <div class="perfil-actions">
+        <a href="{{ path('app_logout') }}" class="btn-salir">Cerrar sesión</a>
+    </div>
+</main>
+{% endblock %}

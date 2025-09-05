@@ -1,0 +1,112 @@
+/* publicar.css */
+
+/* Contenedor principal */
+.publicar-subasta-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.15);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.publicar-subasta-container .title {
+    text-align: center;
+    color: #007bff;
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* Mensajes flash */
+.flash-success,
+.flash-error {
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
+}
+
+.flash-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    box-shadow: 0 2px 6px rgba(255, 0, 0, 0.1);
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Fieldsets */
+fieldset {
+    border: 1px solid #cce0ff;
+    border-radius: 12px;
+    padding: 20px;
+    background: #f0f8ff;
+}
+
+/* Leyenda */
+legend {
+    font-weight: bold;
+    color: #0056b3;
+    padding: 0 10px;
+}
+
+/* Labels */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #007bff;
+}
+
+/* Inputs y textarea */
+form input[type="text"],
+form input[type="number"],
+form input[type="file"],
+form select,
+form textarea {
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #cce0ff;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Botón de publicar */
+form button {
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}

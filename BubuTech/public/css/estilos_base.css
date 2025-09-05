@@ -1,0 +1,161 @@
+/* General */
+body {
+    background: linear-gradient(135deg, #e0f0ff, #ffffff) !important;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.header {
+    background-color: #007bff; /* azul moderno */
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,123,255,0.2);
+    border-radius: 0 0 15px 15px;
+}
+
+.header p {
+    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header a img {
+    width: 130px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+}
+
+.header a img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+}
+
+/* Botones */
+.btn-light {
+    background-color: #ffffff;
+    color: #007bff;
+    border: none;
+    padding: 7px 14px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-light:hover {
+    background-color: #cce0ff;
+    transform: translateY(-2px);
+}
+
+/* Títulos */
+.title {
+    padding: 20px;
+    font-weight: bold;
+    font-size: 24px;
+    color: #0056b3;
+}
+
+/* Productos */
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 20px;
+}
+
+.producto {
+    background: #ffffff;
+    border: 1px solid #cce0ff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,123,255,0.2);
+}
+
+/* Botón de precio */
+.boton_precio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.boton_precio p {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.boton_precio button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.boton_precio button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.usuario-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.usuario-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.usuario-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 10;
+    overflow: hidden;
+}
+
+.usuario-dropdown a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #2c3e50;
+    transition: background 0.2s;
+}
+
+.usuario-dropdown a:hover {
+    background: #eaf3ff;
+    color: #1565c0;
+}
+
+.usuario-menu:hover .usuario-dropdown {
+    display: block;
+}
+
+.usuario-dropdown-toggle::after {
+    display: none;
+}

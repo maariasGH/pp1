@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/detalle_subasta.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="detalle-container">
+    <h2 class="title">Detalle de la Subasta</h2>
+
+    <div class="detalle-card">
+        <div class="detalle-imagen">
+            {% if subasta.producto.imagen %}
+                <img src="{{ asset('uploads/productos/' ~ subasta.producto.imagen) }}" alt="{{ subasta.producto.nombre }}">
+            {% else %}
+                <img src="{{ asset('img/no-image.png') }}" alt="Sin imagen">
+            {% endif %}
+        </div>
+
+        <div class="detalle-info">
+            <h3>{{ subasta.producto.nombre }}</h3>
+            <p><strong>Descripción:</strong> {{ subasta.producto.descripcion }}</p>
+            <p><strong>Precio Inicial:</strong> ${{ subasta.precioBase }}</p>
+            <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
+            <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+
+            <a href="{{ path('listar_subastas') }}" class="btn-volver">← Volver a la lista</a>
+        </div>
+    </div>
+</main>
+{% endblock %}

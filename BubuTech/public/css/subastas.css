@@ -1,0 +1,87 @@
+body {
+    background: #f5f9ff;
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin: 20px 0;
+    color: #004080;
+}
+
+.subastas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.subasta-card {
+    background: #ffffff;
+    border: 1px solid #cce0ff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 64, 128, 0.1);
+    width: 280px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.subasta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 64, 128, 0.2);
+}
+
+.subasta-imagen img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid #e6f0ff;
+}
+
+.subasta-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subasta-info h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #003366;
+}
+
+.subasta-info .descripcion {
+    font-size: 14px;
+    color: #666;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.subasta-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.btn-detalle {
+    margin-top: 10px;
+    text-align: center;
+    background: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.btn-detalle:hover {
+    background: #0056b3;
+}

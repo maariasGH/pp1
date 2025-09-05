@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>BubuTech - Home</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/estilos_base.css') }}">
+        {% endblock %}
+    </head>
+     <body>
+        <div class="header">
+            <a href=" {{ path('listar_subastas') }} ">
+                <img src="{{ asset('images/sprite pagina blanco.png') }}" alt="BubuTech logo">
+            </a>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div style="float: right;">
+                    <button class="btn-light">Ver Carrito</button>
+                    <a href=" {{ path('ver_estadisticas') }} ">
+                        <button class="btn-light" >Ver Estadisticas</button>
+                    </a>
+                    <button class="btn-light">Gestionar</button>
+                    <a href=" {{ path('ver_publicar_subasta') }} ">
+                        <button class="btn-light">Publicar</button>
+                    </a>
+                </div>
+                <div class="usuario-menu">
+                <button class="usuario-btn">
+                    {{ app.user.NombreUsuario }}
+                </button>
+                <div class="usuario-dropdown">
+                    <a href="{{ path('perfil_usuario') }}">Ver información de la cuenta</a>
+                    <a href="{{ path('app_logout') }}">Cerrar sesión</a>
+                </div>
+</div>
+            {% endif %}
+            </div>  
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
