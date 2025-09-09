@@ -1,0 +1,18 @@
+
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+    {% include 'header.html.twig' %} 
+        <main>
+            <h2 class="title"> Detalle de Producto </h2>
+                <div class="producto">
+                    <img src="{{ asset(producto.imagen) }}">
+                    <p>{{ producto.nombre }}</p>
+                    <p>{{ producto.descripcion }}</p>
+                    <p>Precio: {{ producto.precio }}$</p>
+                    <a href="{{ path('listar_productos')}}">
+                        Volver
+                    </a>  
+                </div> 
+        </main>
+    {% endblock %}

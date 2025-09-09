@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250904231503 extends AbstractMigration
+final class Version20250909211008 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -33,6 +33,8 @@ final class Version20250904231503 extends AbstractMigration
         $this->addSql('ALTER TABLE subasta ADD producto_id INT NOT NULL');
         $this->addSql('ALTER TABLE subasta ADD CONSTRAINT FK_5C3A06C47645698E FOREIGN KEY (producto_id) REFERENCES producto (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_5C3A06C47645698E ON subasta (producto_id)');
+        $this->addSql('ALTER TABLE usuario ADD roles JSON NOT NULL, ADD password VARCHAR(255) NOT NULL, DROP contraseña, DROP rol, CHANGE nombre_usuario nombre_usuario VARCHAR(180) NOT NULL, CHANGE nombre_real nombre_real VARCHAR(50) NOT NULL, CHANGE email email VARCHAR(30) NOT NULL, CHANGE fecha_nacimiento fecha_nacimiento DATETIME NOT NULL, CHANGE direccion direccion VARCHAR(50) DEFAULT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_NOMBRE_USUARIO ON usuario (nombre_usuario)');
     }
 
     public function down(Schema $schema): void
@@ -51,5 +53,7 @@ final class Version20250904231503 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_7479C8F2DE66A607 ON oferta');
         $this->addSql('DROP INDEX IDX_7479C8F260B185C4 ON oferta');
         $this->addSql('ALTER TABLE oferta DROP ofertante_id, DROP subasta_id');
+        $this->addSql('DROP INDEX UNIQ_IDENTIFIER_NOMBRE_USUARIO ON usuario');
+        $this->addSql('ALTER TABLE usuario ADD contraseña VARCHAR(20) NOT NULL, ADD rol VARCHAR(15) NOT NULL, DROP roles, DROP password, CHANGE nombre_usuario nombre_usuario VARCHAR(12) NOT NULL, CHANGE nombre_real nombre_real VARCHAR(30) NOT NULL, CHANGE email email VARCHAR(20) NOT NULL, CHANGE fecha_nacimiento fecha_nacimiento DATE NOT NULL, CHANGE direccion direccion VARCHAR(30) DEFAULT NULL');
     }
 }

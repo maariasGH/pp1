@@ -12,6 +12,10 @@
         }
         public function getProductos() {
            return $this->repositorio->findAll();
+        }
+        public function getProducto(int $id) {
+            $producto= $this->repositorio->find($id);
+            return $producto;
         }     
     }
 ?>

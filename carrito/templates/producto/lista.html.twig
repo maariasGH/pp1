@@ -1,16 +1,8 @@
 
 {% extends 'base.html.twig' %}
+
     {% block body %} 
-        <div class="header">
-            <p>Carrito de Compras</p>
-            <div style="float: right;">
-            <button class="btn-light">Ver Orden</button>
-            <button class="btn-light">Salir</button>
-            </div>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <p>Email: {{ app.user.email }}</p>
-            {% endif %}
-        </div>
+    {% include 'header.html.twig' %}
         <main>
             <h2 class="title"> Lista de Productos </h2>
             <div class="productos" >
@@ -20,7 +12,10 @@
                     <p>{{ producto.nombre }}</p>
                     <p>{{ producto.descripcion }}</p>
                     <div class="boton_precio">
-                        <button>Ver Detalles</button>
+                        <a href="{{ path('detalle_producto', {id: producto.id}) }}">
+                            Ver Detalles
+                        </a>
+                        
                         <p>Precio: {{ producto.precio }}$</p> 
                     </div>
                 </div> 
