@@ -10,9 +10,17 @@
                     <p>{{ producto.nombre }}</p>
                     <p>{{ producto.descripcion }}</p>
                     <p>Precio: {{ producto.precio }}$</p>
+                    <form action="{{ path('agregar_producto')}}" method="post">
+                    <label for="text">Cantidad</label>
+                    <input type="text" name="cantidad"></input>
+                    <input type="hidden" name="idProducto" value="{{ producto.id }}"></input>
                     <a href="{{ path('listar_productos')}}">
                         Volver
+                    </a>
+                    <a>
+                        <button type="submit" style="background-color: black; border: none;color: white;cursor:pointer;">Agregar a la Orden</button>
                     </a>  
+                    </form>    
                 </div> 
         </main>
     {% endblock %}

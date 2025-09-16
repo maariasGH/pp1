@@ -13,7 +13,7 @@
 
         public function listarProductos(ProductoManager $manager) : Response {
             $html = '<html><body><b>Esta es la lista de productos</b></body></html>';
-            $productos = $manager->getProductos(); 
+            $productos = $manager->getProductos();
             return $this->render("producto/lista.html.twig",  ['productos' => $productos]);
         }
         

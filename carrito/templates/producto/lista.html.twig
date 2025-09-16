@@ -4,6 +4,11 @@
     {% block body %} 
     {% include 'header.html.twig' %}
         <main>
+            {% for message in app.flashes('Registrado') %}
+                <div class="flash-notice">
+                {{ message }}
+                </div>
+            {% endfor %}
             <h2 class="title"> Lista de Productos </h2>
             <div class="productos" >
             {% for producto in productos %}
