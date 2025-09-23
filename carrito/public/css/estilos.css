@@ -40,16 +40,10 @@ body {
     border: 1px solid black;
     padding: 20px;
 }
-.boton_precio {
-    display:flex;
-    flex:wrap;
-    gap:10px;
-}
-.boton_precio p {
-    font-weight:bold;
-}
-.boton_precio button {
+.producto a {
     background-color:black;
     color:white;
     border-radius:px solid black;
+    padding: 10px;
+    text-decoration: none
 }
