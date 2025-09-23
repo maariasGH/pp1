@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/gestion_subastas.css') }}">
+{% endblock %}
+
+{% block title %}Gestionar Subastas{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">Mis Subastas</h2>
+
+    {% if subastas is not empty %}
+        <div class="list-group">
+            {% for subasta in subastas %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        {% if subasta.producto.imagen %}
+                            <img src="{{ asset('uploads/productos/' ~ subasta.producto.imagen) }}" alt="{{ subasta.producto.nombre }}" style="width: 10%;height: 10%;">
+                        {% else %}
+                            <img src="{{ asset('images/placeholder.png') }}" alt="Sin imagen">
+                        {% endif %}
+                        <h5>{{ subasta.producto.nombre }}</h5>
+                        <p class="mb-1">
+                            Precio base: ${{ subasta.precioBase }} <br>
+                            Estado: {{ subasta.estado.value }} <br>
+                            {% if subasta.estado.value == 'activa' %}
+                                Finaliza: {{ subasta.duracion|date('d/m/Y H:i') }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="botones_gestion">
+                        <a href="{{ path('detalle_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-info">Ver Detalle</a>
+                        <a href="{{ path('editar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{{ path('eliminar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Seguro que deseas eliminar esta subasta?');">
+                           Eliminar
+                        </a>
+                        
+                        {% if subasta.estado.value == 'pausada' %}
+                            <a href="{{ path('reanudar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-success">Reanudar</a>
+                        {% endif %}
+                        
+                        {% if subasta.estado.value == 'activa' %}
+                        <a href="{{ path('pausar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-warning">Pausar</a>
+                        {% endif %}
+                        {% if subasta.estado.value != 'finalizada' %}
+                        <a href="{{ path('confirmar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-success">Confirmar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">No tienes subastas creadas.</div>
+    {% endif %}
+
+    <div class="bt-volver-container">
+         <div class="bt-volver">
+            <a href="{{ path('listar_subastas') }}">Volver al Menú</a>
+        </div>
+    </div>
+   
+</div>
+{% endblock %}

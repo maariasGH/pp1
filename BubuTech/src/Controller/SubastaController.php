@@ -8,6 +8,9 @@
     use Symfony\Component\HttpFoundation\Request;
     use App\Manager\SubastaManager;
     use App\Entity\Subasta;
+    use App\Entity\Comentario;
+    use App\Entity\Oferta;
+    use App\Enum\EstadoSubasta;
     
     class SubastaController extends AbstractController {
         
@@ -31,8 +34,8 @@
             return $this->redirectToRoute('listar_subastas');
         }
         
-        #[Route('/subasta/{id}', name: 'detalle_subasta', methods: ['GET'])]
-        public function detalle(int $id, EntityManagerInterface $em): Response
+        #[Route('/subasta/{id}', name: 'detalle_subasta', methods: ['GET', 'POST'])]
+        public function detalle(int $id, EntityManagerInterface $em, Request $request): Response
         {
             $subasta = $em->getRepository(Subasta::class)->find($id);
 
@@ -40,10 +43,176 @@
                 throw $this->createNotFoundException('La subasta no existe');
             }
 
+            $user = $this->getUser(); 
+
+            // Procedimiento para registrar la Oferta
+            if ($request->request->has('monto')) {
+                $monto = (float) $request->request->get('monto');
+
+                if ($monto > 0) {
+                    $oferta = new Oferta();
+                    $oferta->setMonto($monto);
+                    $oferta->setFecha(new \DateTime());
+                    $oferta->setOfertante($user);
+                    $oferta->setSubasta($subasta);
+
+                    // Validacion contra precio base o mayor oferta existente
+                    if ($monto < $subasta->getPrecioBase()) {
+                        $this->addFlash('error', 'La oferta debe ser mayor al precio base');
+                    } else {
+                        $em->persist($oferta);
+                        $em->flush();
+                        $this->addFlash('success', 'Oferta realizada con éxito');
+                        return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+                    }
+                }
+            }
+
+            // Proceso para realizar comentarios
+            if ($request->request->has('comentario')) {
+                $texto = trim($request->request->get('comentario'));
+
+                if ($texto !== '') {
+                    $comentario = new Comentario();
+                    $comentario->setDetalle($texto);
+                    $comentario->setFecha(new \DateTime());
+                    $comentario->setCantidadLikes(0);
+                    $comentario->setComentador($user);
+                    $comentario->setSubasta($subasta);
+
+                    $em->persist($comentario);
+                    $em->flush();
+                    $this->addFlash('success', 'Comentario publicado');
+                    return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+                } else {
+                    $this->addFlash('info', 'El comentario no puede estar vacio');
+                }
+            }
+
+            // traer comentarios ya hechos
+            $comentarios = $em->getRepository(Comentario::class)->findBy(
+                ['subasta' => $subasta],
+                ['Fecha' => 'DESC']
+            );
+            
             return $this->render('Subastas/detalle.html.twig', [
+                'subasta' => $subasta,
+                'comentarios' => $comentarios,
+            ]);
+        }
+
+        #[Route('/gestionar-subastas', name: 'gestionar_subastas')]
+        public function gestionar(SubastaManager $manager): Response
+        {
+            $user = $this->getUser();
+            if (!$user) {
+                throw $this->createAccessDeniedException('Debes iniciar sesión como vendedor.');
+            }
+
+            $subastas = $manager->getSubastasPorVendedor($user);
+
+            return $this->render('Subastas/gestionar.html.twig', [
+                'subastas' => $subastas
+            ]);
+        }
+
+        #[Route('/subasta/{id}/editar', name: 'editar_subasta', methods: ['GET','POST'])]
+        public function editar(int $id, Request $request, EntityManagerInterface $em, SubastaManager $subastaManager): Response
+        {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+
+            if (!$subasta) {
+                throw $this->createNotFoundException('Subasta no encontrada');
+            }
+
+            $user = $this->getUser();
+            if (!$user || $subasta->getVendedor() === null || $user->getId() !== $subasta->getVendedor()->getId()) {
+                throw $this->createAccessDeniedException('No puedes editar esta subasta');
+            }
+
+            // Si es POST procesamos la actualización
+            if ($request->isMethod('POST')) {
+                try {
+                    $subastaManager->actualizarSubasta($subasta, $request);
+                    $this->addFlash('success', 'Subasta actualizada correctamente');
+                    return $this->redirectToRoute('gestionar_subastas');
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Ocurrió un error al actualizar la subasta: ' . $e->getMessage());
+                    // caemos al render del formulario con mensajes de flash
+                }
+            }
+
+            // GET -> mostramos el formulario con los datos actuales
+            return $this->render('Subastas/editar.html.twig', [
                 'subasta' => $subasta,
             ]);
         }
-        
+
+        #[Route('/subasta/{id}/eliminar', name: 'eliminar_subasta')]
+        public function eliminar(int $id, EntityManagerInterface $em): Response
+        {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+
+            if (!$subasta) {
+                throw $this->createNotFoundException('Subasta no encontrada');
+            }
+
+            $em->remove($subasta);
+            $em->flush();
+
+            $this->addFlash('success', 'Subasta eliminada correctamente');
+            return $this->redirectToRoute('gestionar_subastas');
+        }
+
+        #[Route('/subasta/{id}/pausar', name: 'pausar_subasta')]
+        public function pausar(int $id, EntityManagerInterface $em): Response
+        {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+            $subasta->setEstado(EstadoSubasta::PAUSADA);
+
+            $em->flush();
+            $this->addFlash('info', 'Subasta pausada');
+            return $this->redirectToRoute('gestionar_subastas');
+        }
+
+        #[Route('/subasta/{id}/reanudar', name: 'reanudar_subasta')]
+        public function reanudar(int $id, EntityManagerInterface $em): Response
+        {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+
+            if (!$subasta) {
+                throw $this->createNotFoundException('Subasta no encontrada');
+            }
+
+            // Verificar que el usuario actual sea el vendedor
+            $user = $this->getUser();
+            if (!$user || $subasta->getVendedor() === null || $user->getId() !== $subasta->getVendedor()->getId()) {
+                throw $this->createAccessDeniedException('No puedes reanudar esta subasta');
+            }
+
+            // Solo reanudar si está pausada
+            if ($subasta->getEstado() === EstadoSubasta::PAUSADA) {
+                $subasta->setEstado(EstadoSubasta::ACTIVA);
+                $em->flush();
+                $this->addFlash('success', 'La subasta fue reanudada');
+            } else {
+                $this->addFlash('info', 'La subasta no está pausada');
+            }
+
+            return $this->redirectToRoute('gestionar_subastas');
+        }
+
+
+        #[Route('/subasta/{id}/confirmar', name: 'confirmar_subasta')]
+        public function confirmar(int $id, EntityManagerInterface $em): Response
+        {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+            $subasta->setEstado(EstadoSubasta::FINALIZADA);
+
+            $em->flush();
+            $this->addFlash('success', 'Subasta confirmada');
+            return $this->redirectToRoute('gestionar_subastas');
+        }
+
 }
 ?> 

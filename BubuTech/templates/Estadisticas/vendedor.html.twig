@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/estadisticas.css') }}">
+{% endblock %}
+
+{% block title %}Estadísticas como Vendedor{% endblock %}
+
+{% block body %}
+<main class="detalle-container">
+    <h2 class="title">Estadísticas como Vendedor</h2>
+
+    <p><strong>Cantidad de productos subastados:</strong> {{ subastas|length }}</p>
+    <p><strong>Total de dinero ganado:</strong> ${{ totalGanado }}</p>
+
+    {% if ofertaMaxima %}
+        <p><strong>Oferta máxima recibida:</strong> ${{ ofertaMaxima.monto }}</p>
+    {% else %}
+        <p>No has recibido ofertas aún.</p>
+    {% endif %}
+
+    <a class="btn-volver" href="{{ path('ver_estadisticas') }}">Volver al Menú</a>
+</main>
+{% endblock %}

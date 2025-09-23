@@ -23,7 +23,9 @@
                             <p><strong>Precio base:</strong> ${{ subasta.precioBase }}</p>
                             <p><strong>Categoría:</strong> {{ subasta.categoria ?? 'Sin categoría' }}</p>
                             <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
-                            <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+                            {% if subasta.estado.value == 'activa' %}
+                                <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+                            {% endif %}
                             <a href="{{ path('detalle_subasta', {id: subasta.id}) }}" class="btn-detalle">Ver detalle</a>
                         </div>
                     </div>

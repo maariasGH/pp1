@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Usuario;
 use App\Enum\EstadoSubasta;
 use App\Repository\SubastaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,6 +50,11 @@ class Subasta
      */
     #[ORM\OneToMany(targetEntity: Comentario::class, mappedBy: 'subasta', orphanRemoval: true)]
     private Collection $Comentario;
+
+    
+    #[ORM\ManyToOne(targetEntity: Usuario::class)]
+    #[ORM\JoinColumn(nullable: false)] // si quieres que sea obligatorio
+    private ?Usuario $vendedor = null;
 
     public function __construct()
     {
@@ -202,6 +208,17 @@ class Subasta
             }
         }
 
+        return $this;
+    }
+
+    public function getVendedor(): ?Usuario
+    {
+        return $this->vendedor;
+    }
+
+    public function setVendedor(?Usuario $vendedor): static
+    {
+        $this->vendedor = $vendedor;
         return $this;
     }
 }

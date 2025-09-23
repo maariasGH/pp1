@@ -19,14 +19,57 @@
         </div>
 
         <div class="detalle-info">
+            {# Mensajes flash #}
+            {% for message in app.flashes('success') %}
+                <div class="flash-success">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="flash-error">{{ message }}</div>
+            {% endfor %}
             <h3>{{ subasta.producto.nombre }}</h3>
             <p><strong>Descripción:</strong> {{ subasta.producto.descripcion }}</p>
             <p><strong>Precio Inicial:</strong> ${{ subasta.precioBase }}</p>
             <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
+            {% if subasta.estado.value == 'activa' %}
             <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+            
+            <div class="oferta-seccion">
+            <h4>Realizar una oferta</h4>
+            <form method="post">
+                <input type="number" name="monto" step="0.01" min="1" required>
+                <button type="submit" class="btn-ofertar">Ofertar</button>
+            </form>
+            </div>
+            {% endif %}
 
             <a href="{{ path('listar_subastas') }}" class="btn-volver">← Volver a la lista</a>
         </div>
+    
+    <div class="comentarios-seccion">
+        <h4>Comentarios</h4>
+
+        <form method="post">
+            <textarea name="comentario" rows="3" required></textarea>
+            <button type="submit" class="btn-comentar">Comentar</button>
+        </form>
+
+        {% for message in app.flashes('info') %}
+                <div class="flash-success">{{ message }}</div>
+        {% endfor %}
+
+        <ul class="lista-comentarios">
+            {% for comentario in comentarios %}
+                <li>
+                    <strong>{{ comentario.comentador.nombreUsuario }}</strong>
+                    <small>{{ comentario.fecha|date('d/m/Y H:i') }}</small>
+                    <p>{{ comentario.detalle }}</p>
+                    <span>👍 {{ comentario.cantidadLikes }}</span>
+                </li>
+            {% else %}
+                <li>No hay comentarios aún</li>
+            {% endfor %}
+        </ul>
     </div>
 </main>
+
 {% endblock %}

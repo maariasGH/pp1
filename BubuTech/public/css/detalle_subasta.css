@@ -94,3 +94,157 @@ main.detalle-container {
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* ====== SECCIÓN DE OFERTAS ====== */
+.oferta-section {
+    margin-top: 40px;
+    padding: 20px;
+    background: #eaf3ff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 90, 180, 0.08);
+    animation: fadeIn 0.6s ease;
+}
+
+.oferta-section h4 {
+    font-size: 20px;
+    color: #1a4c8b;
+    margin-bottom: 15px;
+}
+
+.oferta-section form {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.oferta-section input[type="number"] {
+    flex: 1;
+    padding: 10px 12px;
+    border: 2px solid #bcd4f7;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.oferta-section input[type="number"]:focus {
+    border-color: #1565c0;
+    box-shadow: 0 0 6px rgba(21, 101, 192, 0.3);
+    outline: none;
+}
+
+.btn-ofertar {
+    padding: 10px 18px;
+    background: #1565c0;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-ofertar:hover {
+    background: #0d47a1;
+    transform: translateY(-2px);
+}
+
+.comentarios-seccion {
+    width: 100%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f7faff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 90, 180, 0.08);
+    animation: fadeIn 0.6s ease;
+}
+
+.comentarios-seccion h4 {
+    font-size: 22px;
+    color: #1a4c8b;
+    margin-bottom: 18px;
+}
+
+.comentarios-seccion form {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.comentarios-seccion textarea {
+    display: block;
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border: 2px solid #bcd4f7;
+    border-radius: 8px;
+    font-size: 15px;
+    resize: vertical;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.comentarios-seccion textarea:focus {
+    border-color: #1565c0;
+    box-shadow: 0 0 6px rgba(21, 101, 192, 0.3);
+    outline: none;
+}
+
+.btn-comentar {
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: #1565c0;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.btn-comentar:hover {
+    background: #0d47a1;
+    transform: translateY(-2px);
+}
+
+.lista-comentarios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-comentarios li {
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 90, 180, 0.08);
+    animation: fadeIn 0.5s ease;
+}
+
+.lista-comentarios li strong {
+    color: #0d47a1;
+    font-size: 15px;
+    margin-right: 8px;
+}
+
+.lista-comentarios li small {
+    color: #607d8b;
+    font-size: 13px;
+}
+
+.lista-comentarios li p {
+    margin: 8px 0 0;
+    font-size: 15px;
+    color: #34495e;
+}
+
+.lista-comentarios li span {
+    font-size: 14px;
+    color: #1565c0;
+    font-weight: bold;
+}
+
+
+
+
