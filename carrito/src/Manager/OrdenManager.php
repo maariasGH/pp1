@@ -1,21 +1,66 @@
 <?php
-    namespace App\Manager;
-    
-    use App\Repository\OrdenRepository;
+namespace App\Manager;
 
-    class OrdenManager {
+use App\Entity\Orden;
+use App\Entity\Item;
+use App\Repository\ProductoRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-        private OrdenRepository $repositorio;
+class OrdenManager
+{
+    private EntityManagerInterface $entityManager;
+    private ProductoRepository $productoRepository;
 
-        function __construct(OrdemRepository $repository) {
-            $this->repositorio=$repository;
-        }
-        public function getOrdenes() {
-           return $this->repositorio->findAll();
-        }
-        public function getOrden(int $id) {
-            $orden= $this->repositorio->find($id);
-            return $orden;
-        }     
+    public function __construct(EntityManagerInterface $entityManager, ProductoRepository $productoRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->productoRepository = $productoRepository;
     }
-?>
+
+    public function agregarProducto($usuario, int $idProducto, int $cantidad, Orden $orden): void
+    {
+        $producto = $this->productoRepository->find($idProducto);
+        if (!$producto) {
+            throw new \Exception("Producto no encontrado (ID: $idProducto)");
+        }
+
+        $item= new Item();
+        $item->setProducto($producto);
+        $item->setCantidad($cantidad);
+        
+        if ($orden) {
+            $item->setOrden($orden);
+        
+            $orden->addItem($item);
+
+            $this->entityManager->persist($item);
+            $this->entityManager->persist($orden);
+            $this->entityManager->flush();
+        } else {
+            $orden = new Orden();
+            $orden->setEstado('Iniciada');
+            $orden->setIniciada(new \DateTime());
+            $orden->setUsuario($usuario);
+            $item->setOrden($orden);
+            
+            $orden->addItem($item);
+
+            $this->entityManager->persist($item);
+            $this->entityManager->persist($orden);
+            $this->entityManager->flush();
+        }
+        
+    }
+
+    public function getOrdenes()
+    {
+        return $this->entityManager->getRepository(Orden::class)->findAll();
+    }
+
+    public function getOrden(int $id): ?Orden
+    {
+        return $this->entityManager->getRepository(Orden::class)->find($id);
+    }
+}
