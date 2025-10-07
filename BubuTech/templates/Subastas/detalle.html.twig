@@ -53,6 +53,9 @@
             <button type="submit" class="btn-comentar">Comentar</button>
         </form>
 
+        {% for message in app.flashes('success-coment') %}
+                <div class="flash-success" style="margin-bottom: 5%;">{{ message }}</div>
+        {% endfor %}
         {% for message in app.flashes('info') %}
                 <div class="flash-success">{{ message }}</div>
         {% endfor %}

@@ -12,12 +12,6 @@
 <div class="container mt-4">
     <h2>Editar Subasta</h2>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label == 'error' ? 'danger' : (label == 'info' ? 'info' : 'success') }}">{{ message }}</div>
-        {% endfor %}
-    {% endfor %}
-
     <form action="{{ path('editar_subasta', {id: subasta.id}) }}" method="post" enctype="multipart/form-data" class="mt-3">
         <div class="mb-3">
             <label class="form-label">Nombre del Producto</label>

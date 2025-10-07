@@ -30,7 +30,9 @@
         #[Route('/publicarsubasta', name: 'publicar_subasta', methods: ['GET','POST'])]
         public function publicarSubasta(Request $request, SubastaManager $subastaManager): Response
         {
-            $subastaManager->publicarSubasta($request);
+            $usuario= $this->getUser();
+            $usuario->addRol('ROLE_VENDEDOR');
+            $subastaManager->publicarSubasta($request, $usuario);
             return $this->redirectToRoute('listar_subastas');
         }
         
@@ -82,7 +84,7 @@
 
                     $em->persist($comentario);
                     $em->flush();
-                    $this->addFlash('success', 'Comentario publicado');
+                    $this->addFlash('success-coment', 'Comentario publicado');
                     return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
                 } else {
                     $this->addFlash('info', 'El comentario no puede estar vacio');

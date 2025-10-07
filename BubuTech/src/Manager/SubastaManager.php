@@ -23,7 +23,7 @@
         public function getSubastas() {
            return $this->repositorio->findAll();
         }
-        public function publicarSubasta(Request $request): Subasta {
+        public function publicarSubasta(Request $request, Usuario $usuario): Subasta {
             $datos = $request->request->all();
             $imagen = $request->files->get('producto_imagen');
 
@@ -45,6 +45,7 @@
             $subasta->setEstado(EstadoSubasta::ACTIVA);
             $subasta->setOfertaParcialGanadora(0);
             $subasta->setOfertaFinalGanadora(0);
+            $subasta->setVendedor($usuario);
 
             $this->em->persist($producto);
             $this->em->persist($subasta);

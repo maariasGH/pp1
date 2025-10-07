@@ -13,6 +13,11 @@
 
     {% if subastas is not empty %}
         <div class="list-group">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'error' ? 'danger' : (label == 'info' ? 'info' : 'success') }}" style="background: #e3f6e9;color: #1b5e20;border-left: 6px solid #2e7d32;">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
             {% for subasta in subastas %}
                 <div class="list-group-item d-flex justify-content-between align-items-center">
                     <div>

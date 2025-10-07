@@ -3,6 +3,9 @@
 {% endblock %}
 {% block body %}
     <form action="{{ path('app_login') }}" method="post">
+    <a href=" {{ path('app_login') }} ">
+        <img src="{{ asset('images/sprite pagina azul.png') }}" alt="BubuTech logo">
+    </a>
     {% if error %}
         <div class="msg-error">Usuario o contraseña incorrecta</div>
     {% endif %}
