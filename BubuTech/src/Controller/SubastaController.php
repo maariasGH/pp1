@@ -10,6 +10,7 @@
     use App\Entity\Subasta;
     use App\Entity\Comentario;
     use App\Entity\Oferta;
+    use App\Entity\Usuario;
     use App\Enum\EstadoSubasta;
     
     class SubastaController extends AbstractController {
@@ -214,6 +215,28 @@
             $em->flush();
             $this->addFlash('success', 'Subasta confirmada');
             return $this->redirectToRoute('gestionar_subastas');
+        }
+
+        #[Route('/subasta/{id}/like/{id_com}', name: 'likear', methods: ['GET','POST'] ) ]
+        public function likear(int $id, int $id_com, EntityManagerInterface $em, Request $request): Response { 
+            $usuario = $this->getUser();
+            $comentario = $em->getRepository(Comentario::class)->find($id_com);
+            $usuariosMg= $comentario->getUsuariosMeGusta();
+            $CantidadLikes= $comentario->getCantidadLikes();
+            if ((!in_array($usuario, $comentario->getUsuariosMeGusta()->toArray())) || $CantidadLikes==0) {
+                $comentario->setCantidadLikes($CantidadLikes+1);
+                $comentario->addUsuariosMeGusta($usuario);
+                $em->persist($comentario);
+                $em->flush();
+                return $this->redirectToRoute('detalle_subasta', ['id'=>$id]);
+            } else {
+                $comentario->setCantidadLikes($CantidadLikes-1);
+                $comentario->removeUsuariosMeGusta($usuario);
+                $em->persist($comentario);
+                $em->flush();
+                return $this->redirectToRoute('detalle_subasta', ['id'=>$id]);
+            }
+            
         }
 
 }

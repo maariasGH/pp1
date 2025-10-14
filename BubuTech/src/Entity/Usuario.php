@@ -63,6 +63,11 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comentario::class, mappedBy: 'comentador', orphanRemoval: true)]
     private Collection $Comentario;
 
+    
+    #[ORM\ManyToMany(targetEntity:Comentario::class, mappedBy:"UsuariosMeGusta")]
+    
+    private $comentariosMegusteados;
+
     public function __construct()
     {
         $this->Ofertaa = new ArrayCollection();

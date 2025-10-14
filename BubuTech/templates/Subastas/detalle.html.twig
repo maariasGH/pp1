@@ -66,7 +66,9 @@
                     <strong>{{ comentario.comentador.nombreUsuario }}</strong>
                     <small>{{ comentario.fecha|date('d/m/Y H:i') }}</small>
                     <p>{{ comentario.detalle }}</p>
-                    <span>👍 {{ comentario.cantidadLikes }}</span>
+                    <a href="{{ path('likear', { id: subasta.id, id_com: comentario.id }) }}" style="text-decoration: none;">
+                        <span>👍 {{ comentario.cantidadLikes }}</span>
+                    </a>  
                 </li>
             {% else %}
                 <li>No hay comentarios aún</li>
