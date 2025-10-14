@@ -90,11 +90,12 @@ class Orden
 
     public function addItem(Item $item): static
     {
-        if (!$this->item->contains($item)) {
-            $this->item->add($item);
-            $item->setOrden($this);
+        foreach ($item as $i) {
+            if ($this->$item.equals($item)) {
+                $this->item->add($item);
+                $item->setOrden($this);
+            }    
         }
-
         return $this;
     }
 

@@ -64,4 +64,11 @@ class Item
 
         return $this;
     }
+
+    public function equals(Item $item): bool {
+        if ($this->item=$item) {
+            return true;
+        }
+        return false;
+    }
 }
