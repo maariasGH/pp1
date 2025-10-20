@@ -11,25 +11,15 @@
 <main class="detalle-container">
     <h2 class="title">Estadísticas como Comprador</h2>
 
-    <p><strong>Subastas Ganadas:</strong> {{ subastasGanadas|length }}</p>
+    <p><strong>Cantidad de Subastas Ganadas:</strong> {{ subastasGanadas }}</p>
     <p><strong>Total de Dinero Gastado:</strong> ${{ totalGastado }}</p>
 
-   <p><strong>Subastas Ganadas:</strong>
-    {% for message in app.flashes('info') %}
-            <div class="flash-info">{{ message }}</div>
-    {% endfor %}
-    {% for subasta in subastasGanadas %}
-    <tr>
-        <p style="text-decoration: underline;">Producto:</p>
-        <td><strong>{{ subasta.producto.nombre }}</strong></td>
-        <br>
-        <p style="text-decoration: underline;">Monto Pagado:</p>
-        <td><strong>{{ subasta.OfertaFinalGanadora }}</strong></td>
-        <br>
-        <p style="text-decoration: underline;">Categoria:</p>
-        <td><strong>{{ subasta.Categoria }}</strong></td>
-    </tr>
-    {% endfor %}
+    {% if subastaMasCara == 0 %}
+        <p><strong>Todavia no hiciste ofertas!</strong>
+    {% else %}
+        <p><strong>Subastas Mas Cara Pagada: {{ subastaMasCara }}$</strong>
+    {% endif %}
+
    </p>
 
     <a class="btn-volver" href="{{ path('ver_estadisticas') }}">Volver al Menú</a>

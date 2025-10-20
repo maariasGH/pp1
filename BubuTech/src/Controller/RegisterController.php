@@ -46,9 +46,37 @@ class RegisterController extends AbstractController {
             }
             // Contraseña hasheada
             $plainPassword = $request->request->get('password');
+            $confirmPassword = $request->request->get('confirm_password');
+            
+            if (empty($plainPassword)) {
+                $this->addFlash('error', 'La contraseña es obligatoria.');
+                return $this->redirectToRoute('app_registro');
+            }
+
+            if (strlen($plainPassword) < 8) {
+                $this->addFlash('error', 'La contraseña debe tener al menos 8 caracteres.');
+                return $this->redirectToRoute('app_registro');
+            }
+
+            if (!preg_match('/[\W]/', $plainPassword)) {
+                $this->addFlash('error', 'La contraseña debe incluir al menos un símbolo.');
+                return $this->redirectToRoute('app_registro');
+            }
+
+            if ($plainPassword !== $confirmPassword) {
+                $this->addFlash('error', 'Las contraseñas no coinciden.');
+                return $this->redirectToRoute('app_registro');
+            }
+
             if (!empty($plainPassword)) {
                 $hashedPassword = $passwordHasher->hashPassword($usuario, $plainPassword);
                 $usuario->setPassword($hashedPassword);
+            }
+
+            $aceptaTerminos = $request->request->get('acepta_terminos');
+
+            if (!$aceptaTerminos) {
+                $this->addFlash('error', 'Debés aceptar los términos y condiciones para registrarte.');
             }
 
             try {

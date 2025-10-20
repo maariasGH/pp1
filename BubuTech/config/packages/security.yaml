@@ -35,6 +35,7 @@ security:
         - { path: ^/registro, roles: PUBLIC_ACCESS }
         - { path: ^/confirmar_registro, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS}
+        - { path: ^/recuperar, roles: PUBLIC_ACCESS}
         - { path: ^/, roles: ROLE_USER }
         
 

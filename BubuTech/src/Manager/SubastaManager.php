@@ -27,7 +27,32 @@
             $datos = $request->request->all();
             $imagen = $request->files->get('producto_imagen');
 
+            // RN01 – Validar nombre del producto
+            $nombre = trim($datos['producto_nombre'] ?? '');
+            if (strlen($nombre) < 5 || strlen($nombre) > 100) {
+                throw new \InvalidArgumentException('El nombre del producto debe tener entre 5 y 100 caracteres.');
+            }
+
+            // RN02 – Validar descripción
+            $descripcion = trim($datos['producto_descripcion'] ?? '');
+            if (strlen($descripcion) < 30 || strlen($descripcion) > 150 ) {
+                throw new \InvalidArgumentException('La descripción debe tener entre 30 y 150 caracteres.');
+            }
+
+            // RN03 – Validar precio base
+            $precioBase = (float)($datos['precio_base'] ?? 0);
+            if ($precioBase <= 0) {
+                throw new \InvalidArgumentException('El precio base debe ser mayor a cero.');
+            }
+
+            // RN04 – Validar duración
+            $duracionDias = (int)($datos['duracion'] ?? 0);
+            if ($duracionDias < 1 || $duracionDias > 7) {
+                throw new \InvalidArgumentException('La duración de la subasta debe estar entre 1 y 7 días.');
+            }
+
             $producto = new Producto();
+            if ($datos['producto_nombre'])
             $producto->setNombre($datos['producto_nombre']);
             $producto->setDescripcion($datos['producto_descripcion']);
 
@@ -90,6 +115,18 @@
                 throw new \RuntimeException('La subasta no tiene producto asociado');
             }
 
+            // RN01 – Validar nombre del producto
+            $nombre = trim($datos['producto_nombre'] ?? '');
+            if (strlen($nombre) < 5 || strlen($nombre) > 100) {
+                throw new \InvalidArgumentException('El nombre del producto debe tener entre 5 y 100 caracteres.');
+            }
+
+            // RN02 – Validar descripción
+            $descripcion = trim($datos['producto_descripcion'] ?? '');
+            if (strlen($descripcion) < 30 || strlen($descripcion) > 150 ) {
+                throw new \InvalidArgumentException('La descripción debe tener entre 30 y 150 caracteres.');
+            }
+
             // Actualizar campos del producto
             if (isset($datos['producto_nombre'])) {
                 $producto->setNombre(trim($datos['producto_nombre']));
@@ -105,25 +142,19 @@
                 $producto->setImagen($nuevoNombre);
             }
 
-            // Actualizar campos de la subasta
-            if (isset($datos['precio_base']) && is_numeric($datos['precio_base'])) {
-                $subasta->setPrecioBase((float)$datos['precio_base']);
-            }
-
-            // Duración
-            if (isset($datos['duracion']) && is_numeric($datos['duracion'])) {
-                $subasta->setDuracion(new \DateTime('+' . (int)$datos['duracion'] . ' days'));
-            }
-
-            if (isset($datos['categoria'])) {
-                $subasta->setCategoria(trim($datos['categoria']));
-            }
-
             $this->em->persist($producto);
             $this->em->persist($subasta);
             $this->em->flush();
 
             return $subasta;
+        }
+        public function buscarPorNombre(string $nombre): array {
+            return $this->repositorio->createQueryBuilder('s')
+                ->join('s.producto', 'p')
+                ->where('LOWER(p.Nombre) LIKE :nombre')
+                ->setParameter('nombre', '%' . strtolower($nombre) . '%')
+                ->getQuery()
+                ->getResult();
         }
     }
 ?>

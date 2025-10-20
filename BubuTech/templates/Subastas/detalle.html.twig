@@ -30,16 +30,41 @@
             <p><strong>Descripción:</strong> {{ subasta.producto.descripcion }}</p>
             <p><strong>Precio Inicial:</strong> ${{ subasta.precioBase }}</p>
             <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
-            {% if subasta.estado.value == 'activa' %}
-            <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
             
-            <div class="oferta-seccion">
-            <h4>Realizar una oferta</h4>
-            <form method="post">
-                <input type="number" name="monto" step="0.01" min="1" required>
-                <button type="submit" class="btn-ofertar">Ofertar</button>
-            </form>
-            </div>
+            {% if subasta.estado.value == 'activa' and usuario is not same as(subasta.vendedor) %}
+                <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+                {% if subasta.OfertaParcialGanadora == 0 %}
+                    <p><strong>¡Sé la primer Oferta!</strong></p>
+                {% else %}
+                    <p><strong>Oferta Ganadora Hasta el Momento:</strong> {{ subasta.OfertaParcialGanadora }}$</p>
+                {% endif %}
+                <div class="oferta-seccion">
+                <h4>Realizar una oferta</h4>
+                <form method="post">
+                    <input type="number" name="monto" step="0.01" min="1" required>
+                    <button type="submit" class="btn-ofertar">Ofertar</button>
+                </form>
+                </div>
+            {% elseif subasta.estado.value == 'activa' and usuario is same as(subasta.vendedor) %}
+                <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
+                {% if subasta.OfertaParcialGanadora == 0 %}
+                    <p><strong>Sin Ofertas Aún</strong></p>
+                {% else %}
+                    <p><strong>Oferta Ganadora Hasta el Momento:</strong> {{ subasta.OfertaParcialGanadora }}$</p>
+                {% endif %}
+            {% endif %}
+            {% if subasta.estado.value == 'finalizada' %}
+                <p><strong>Oferta Ganadora:</strong> {{ subasta.OfertaFinalGanadora }}$</p>
+                <p><strong>Ganador(a):</strong> {{ subasta.ganador.NombreUsuario }}</p>
+                <p><strong>Historial de Ofertas:</strong></p>
+                <div class="historial-ofertas">
+                    {% for oferta in subasta.oferta %}
+                        <p><strong>Usuario:</strong> {{ oferta.ofertante.NombreUsuario }}</p>
+                        <p><strong>Monto Ofertado:</strong> {{ oferta.monto }}$</p>
+                        <p><strong>----------------</strong></p>
+                    {% endfor %}
+                </div>
+                
             {% endif %}
 
             <a href="{{ path('listar_subastas') }}" class="btn-volver">← Volver a la lista</a>
@@ -68,7 +93,12 @@
                     <p>{{ comentario.detalle }}</p>
                     <a href="{{ path('likear', { id: subasta.id, id_com: comentario.id }) }}" style="text-decoration: none;">
                         <span>👍 {{ comentario.cantidadLikes }}</span>
-                    </a>  
+                    </a>
+                {% if usuario is same as(subasta.vendedor) or usuario is same as(comentario.comentador) %}
+                    <a href="{{ path('eliminar_comentario', { id: subasta.id, id_com: comentario.id }) }}" style="text-decoration: none;">
+                        <span style="float: right;">❌ Eliminar</span>
+                    </a>
+                {% endif %}
                 </li>
             {% else %}
                 <li>No hay comentarios aún</li>

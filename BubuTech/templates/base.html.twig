@@ -13,7 +13,10 @@
                 <img src="{{ asset('images/sprite pagina blanco.png') }}" alt="BubuTech logo">
             </a>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                
+                
                 <div style="float: right;">
+                    
                     <a href=" {{ path('ver_estadisticas') }} ">
                         <button class="btn-light" >Ver Estadisticas</button>
                     </a>
@@ -25,16 +28,16 @@
                     </a>
                 </div>
                 <div class="usuario-menu">
-                <button class="usuario-btn">
-                    {{ app.user.NombreUsuario }}
-                </button>
-                <div class="usuario-dropdown">
-                    <a href="{{ path('perfil_usuario') }}">Ver información de la cuenta</a>
-                    <a href="{{ path('app_logout') }}">Cerrar sesión</a>
+                    <button class="usuario-btn">
+                        {{ app.user.NombreUsuario }}
+                    </button>
+                    <div class="usuario-dropdown">
+                        <a href="{{ path('perfil_usuario') }}">Ver información de la cuenta</a>
+                        <a href="{{ path('app_logout') }}">Cerrar sesión</a>
+                    </div>
                 </div>
-</div>
             {% endif %}
-            </div>  
+        </div>  
         {% block body %}
         {% endblock %}
     </body>

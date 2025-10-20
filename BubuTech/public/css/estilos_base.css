@@ -195,3 +195,44 @@ body {
     color: #0d47a1;
     border-left: 6px solid #1565c0;
 }
+
+.busqueda-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.busqueda-header {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 10px;
+    padding: 5px 8px;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.busqueda-header input {
+    border: none;
+    outline: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 320px;
+    text-align: left;
+}
+
+.busqueda-header button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.busqueda-header button:hover {
+    background-color: #0056b3;
+}

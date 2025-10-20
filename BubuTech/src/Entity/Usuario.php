@@ -68,6 +68,21 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     
     private $comentariosMegusteados;
 
+    #[ORM\Column]
+    private ?float $dineroGanado = 0.00;
+
+    #[ORM\Column]
+    private ?int $cantSubastasGanadas = 0;
+
+    #[ORM\Column]
+    private ?float $dineroGastado = 0.00;
+
+    #[ORM\Column]
+    private ?float $subastaMasCara = 0.00;
+
+    #[ORM\Column]
+    private ?float $ultimaOferta = 0.00;
+
     public function __construct()
     {
         $this->Ofertaa = new ArrayCollection();
@@ -283,5 +298,50 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function setDineroGanado(float $monto) {
+        $this->dineroGanado=$this->dineroGanado+$monto;
+        return $this;
+    }
+
+    public function getDineroGanado(): float {
+        return $this->dineroGanado;
+    }
+
+    public function setDineroGastado(float $monto) {
+        $this->dineroGastado=$this->dineroGastado+$monto;
+        return $this;
+    }
+
+    public function getDineroGastado(): float {
+        return $this->dineroGastado;
+    }
+
+    public function setCantidadSubastasGanadas(int $cantidad) {
+        $this->cantSubastasGanadas=$this->cantSubastasGanadas+$cantidad;
+        return $this;
+    }
+
+    public function getCantidadSubastasGanadas(): int {
+        return $this->cantSubastasGanadas;
+    }
+
+    public function setSubastaMasCara(float $monto) {
+        $this->subastaMasCara=$this->subastaMasCara+$monto;
+        return $this;
+    }
+
+    public function getSubastaMasCara(): float {
+        return $this->subastaMasCara;
+    }
+
+    public function setUltimaOferta(float $monto) {
+        $this->ultimaOferta=$this->setUltimaOferta+$monto;
+        return $this;
+    }
+
+    public function getUltimaOferta(): float {
+        return $this->ultimaOferta;
     }
 }

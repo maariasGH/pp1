@@ -1,0 +1,32 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+    
+
+    
+
+    <form method="post">
+        {% for message in app.flashes('error') %}
+        <div class="msg-error">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="msg-success">{{ message }}</div>
+        {% endfor %}
+        <h2 style="color: dodgerblue;">Restablecer Contraseña</h2>
+        <label for="username">Nombre de  Usuario:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="pin">PIN de recuperación:</label>
+        <input type="text" id="pin" name="pin" required>
+
+        <label for="nueva">Nueva contraseña:</label>
+        <input type="password" id="nueva" name="nueva" required>
+
+        <label for="confirmar">Confirmar contraseña:</label>
+        <input type="password" id="confirmar" name="confirmar" required>
+
+        <button type="submit">Restablecer</button>
+    </form>
+{% endblock %}

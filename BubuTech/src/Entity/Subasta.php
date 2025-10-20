@@ -43,7 +43,7 @@ class Subasta
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Producto $Producto = null;
+    private ?Producto $producto = null;
 
     /**
      * @var Collection<int, Comentario>
@@ -55,6 +55,10 @@ class Subasta
     #[ORM\ManyToOne(targetEntity: Usuario::class)]
     #[ORM\JoinColumn(nullable: false)] // si quieres que sea obligatorio
     private ?Usuario $vendedor = null;
+
+    #[ORM\ManyToOne(targetEntity: Usuario::class)]
+    #[ORM\JoinColumn(nullable: true)] // si quieres que sea obligatorio
+    private ?Usuario $ganador = null;
 
     public function __construct()
     {
@@ -171,12 +175,12 @@ class Subasta
 
     public function getProducto(): ?Producto
     {
-        return $this->Producto;
+        return $this->producto;
     }
 
-    public function setProducto(Producto $Producto): static
+    public function setProducto(Producto $producto): static
     {
-        $this->Producto = $Producto;
+        $this->producto = $producto;
 
         return $this;
     }
@@ -219,6 +223,17 @@ class Subasta
     public function setVendedor(?Usuario $vendedor): static
     {
         $this->vendedor = $vendedor;
+        return $this;
+    }
+
+    public function getGanador(): ?Usuario
+    {
+        return $this->ganador;
+    }
+
+    public function setGanador(?Usuario $ganador): static
+    {
+        $this->ganador = $ganador;
         return $this;
     }
 }

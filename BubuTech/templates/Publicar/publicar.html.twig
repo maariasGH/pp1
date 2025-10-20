@@ -7,17 +7,10 @@
     <main class="publicar-subasta-container">
         <h2 class="title">Publicar una Subasta</h2>
 
-        {% if app.flashes('success') %}
-            <div class="flash-success">
-                {{ app.flashes('success')[0] }}
-            </div>
-        {% endif %}
-
-        {% if app.flashes('error') %}
-            <div class="flash-error">
-                {{ app.flashes('error')[0] }}
-            </div>
-        {% endif %}
+        
+        {% for message in app.flashes('error') %}
+            <div class="flash-error">{{ message }}</div>
+        {% endfor %}
 
         <form action="{{ path('publicar_subasta') }}" method="post" enctype="multipart/form-data">
             <fieldset>
@@ -43,7 +36,21 @@
                 <input type="number" id="duracion" name="duracion" min="1" required>
 
                 <label for="categoria">Categoría:</label>
-                <input type="text" id="categoria" name="categoria" maxlength="20">
+                <select id="categoria" name="categoria" required>
+                    <option value="">-- Seleccioná una categoría --</option>
+                    <option value="Teclado">Teclado</option>
+                    <option value="Mouse">Mouse</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="Auriculares">Auriculares</option>
+                    <option value="Micrófono">Micrófono</option>
+                    <option value="Webcam">Webcam</option>
+                    <option value="Joystick">Joystick</option>
+                    <option value="Pad">Pad</option>
+                    <option value="Graficas">Graficas</option>
+                    <option value="Mothers">Mothers</option>
+                    <option value="Procesadores">Procesadores</option>
+                    <option value="PC´s Armadas">PC´s Armadas</option>
+                </select>
             </fieldset>
 
             <button type="submit">Publicar Subasta</button>

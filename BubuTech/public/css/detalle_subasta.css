@@ -245,6 +245,11 @@ main.detalle-container {
     font-weight: bold;
 }
 
+.historial-ofertas {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 10px;
+}
 
 
 

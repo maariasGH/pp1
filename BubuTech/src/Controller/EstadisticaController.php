@@ -23,46 +23,15 @@ class EstadisticaController extends AbstractController
     }
 
     #[Route('/comprador', name: 'estadisticas_comprador')]
-    public function comprador(
-        SubastaManager $subastaManager,
-        OfertaManager $ofertaManager
-    ): Response {
+    public function comprador(): Response {
         /** @var Usuario $usuario */
         $usuario = $this->getUser();
-
-        
-        $subastas = $subastaManager->getSubastas();
-
-        $subastasGanadas = [];
-
-        foreach ($subastas as $subasta) {
-            // Obtenemos la oferta máxima de la subasta
-            $ofertaGanadora = $ofertaManager->getOfertaMaxima($subasta);
-
-            // Si el usuario actual es el ofertante ganador, agregamos la subasta
-            if ($ofertaGanadora && $ofertaGanadora->getOfertante()->getId() === $usuario->getId()) {
-                $subastasGanadas[] = $subasta;
-            }
-        }
-
-        // Total gastado
-        $totalGastado = array_reduce(
-            $subastasGanadas,
-            fn($carry, $subasta) => $carry + $subasta->getOfertaFinalGanadora(),
-            0
-        );
-
+        // Cantidad de Subastas Ganadas
+        $subastasGanadas= $usuario->getCantidadSubastasGanadas();
         // Subasta más cara
-        $subastaMasCara = null;
-        if (!empty($subastasGanadas)) {
-            usort(
-                $subastasGanadas,
-                fn($a, $b) => $b->getOfertaFinalGanadora() <=> $a->getOfertaFinalGanadora()
-            );
-            $subastaMasCara = $subastasGanadas[0];
-        } else {
-            $this->addFlash('info','Aun no tienes subastas ganadas');
-        }
+        $subastaMasCara = $usuario->getSubastaMasCara();
+        //Total Gastado por el usuario
+        $totalGastado = $usuario->getDineroGastado();
 
         return $this->render('Estadisticas/comprador.html.twig', [
             'subastasGanadas' => $subastasGanadas,

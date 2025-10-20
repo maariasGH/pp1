@@ -17,8 +17,15 @@
         
         #[Route('/', name: 'listar_subastas')] // http://localhost/pp1/BubuTech/public
         
-        public function listarSubastas(SubastaManager $manager): Response {
-            $subastas = $manager->getSubastas();
+        public function listarSubastas(SubastaManager $manager, Request $request): Response {
+            $query = $request->query->get('q');
+
+            if ($query) {
+                $subastas = $manager->buscarPorNombre($query);
+            } else {
+                $subastas = $manager->getSubastas();
+            }
+
             return $this->render("Subastas/subastas.html.twig", ['subastas' => $subastas]);
         }
 
@@ -31,10 +38,19 @@
         #[Route('/publicarsubasta', name: 'publicar_subasta', methods: ['GET','POST'])]
         public function publicarSubasta(Request $request, SubastaManager $subastaManager): Response
         {
-            $usuario= $this->getUser();
-            $usuario->addRol('ROLE_VENDEDOR');
-            $subastaManager->publicarSubasta($request, $usuario);
-            return $this->redirectToRoute('listar_subastas');
+            if ($request->isMethod('POST')) {
+                try {
+                    $usuario = $this->getUser();
+                    $usuario->addRol('ROLE_VENDEDOR');
+                    $subastaManager->publicarSubasta($request, $usuario);
+                    $this->addFlash('publicada', 'Subasta publicada correctamente.');
+                    return $this->redirectToRoute('listar_subastas');
+                } catch (\InvalidArgumentException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                    return $this->redirectToRoute('publicar_subasta');
+                }
+            }
+            return $this->render('Publicar/publicar.html.twig');
         }
         
         #[Route('/subasta/{id}', name: 'detalle_subasta', methods: ['GET', 'POST'])]
@@ -58,11 +74,17 @@
                     $oferta->setFecha(new \DateTime());
                     $oferta->setOfertante($user);
                     $oferta->setSubasta($subasta);
+                    $user->setDineroGastado($monto);
+                    if ($user->getSubastaMasCara()<$monto) {
+                        $user->setSubastaMasCara($monto);
+                    }
 
                     // Validacion contra precio base o mayor oferta existente
-                    if ($monto < $subasta->getPrecioBase()) {
-                        $this->addFlash('error', 'La oferta debe ser mayor al precio base');
+                    if ($monto < $subasta->getPrecioBase() || $monto < $subasta->getOfertaParcialGanadora() ) {
+                        $this->addFlash('error', 'La oferta debe ser mayor al precio base o a la oferta parcialmente ganadora');
                     } else {
+                        $subasta->setOfertaParcialGanadora($monto);
+                        $subasta->setGanador($user);
                         $em->persist($oferta);
                         $em->flush();
                         $this->addFlash('success', 'Oferta realizada con éxito');
@@ -76,17 +98,21 @@
                 $texto = trim($request->request->get('comentario'));
 
                 if ($texto !== '') {
-                    $comentario = new Comentario();
-                    $comentario->setDetalle($texto);
-                    $comentario->setFecha(new \DateTime());
-                    $comentario->setCantidadLikes(0);
-                    $comentario->setComentador($user);
-                    $comentario->setSubasta($subasta);
+                    if (strlen($texto)>2 && strlen($texto)<301) {
+                        $comentario = new Comentario();
+                        $comentario->setDetalle($texto);
+                        $comentario->setFecha(new \DateTime());
+                        $comentario->setCantidadLikes(0);
+                        $comentario->setComentador($user);
+                        $comentario->setSubasta($subasta);
 
-                    $em->persist($comentario);
-                    $em->flush();
-                    $this->addFlash('success-coment', 'Comentario publicado');
-                    return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+                        $em->persist($comentario);
+                        $em->flush();
+                        $this->addFlash('success-coment', 'Comentario publicado');
+                        return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+                    } else {
+                        $this->addFlash('error', 'El comentario debe tener entre 3 y 300 caracteres');
+                    } 
                 } else {
                     $this->addFlash('info', 'El comentario no puede estar vacio');
                 }
@@ -101,6 +127,7 @@
             return $this->render('Subastas/detalle.html.twig', [
                 'subasta' => $subasta,
                 'comentarios' => $comentarios,
+                'usuario' => $this->getUser(),
             ]);
         }
 
@@ -139,9 +166,9 @@
                     $subastaManager->actualizarSubasta($subasta, $request);
                     $this->addFlash('success', 'Subasta actualizada correctamente');
                     return $this->redirectToRoute('gestionar_subastas');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Ocurrió un error al actualizar la subasta: ' . $e->getMessage());
-                    // caemos al render del formulario con mensajes de flash
+                } catch (\InvalidArgumentException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                    return $this->redirectToRoute('editar_subasta', ['id' => $subasta->getId()]);
                 }
             }
 
@@ -210,7 +237,15 @@
         public function confirmar(int $id, EntityManagerInterface $em): Response
         {
             $subasta = $em->getRepository(Subasta::class)->find($id);
+            $vendedor = $subasta->getVendedor();
             $subasta->setEstado(EstadoSubasta::FINALIZADA);
+            $subasta->setOfertaFinalGanadora($subasta->getOfertaParcialGanadora());
+            $vendedor->setDineroGanado($subasta->getOfertaFinalGanadora());
+            if ($subasta->getGanador()) {
+                $compradorGanador = $subasta->getGanador();
+                $compradorGanador->setCantidadSubastasGanadas(1);
+            }
+            
 
             $em->flush();
             $this->addFlash('success', 'Subasta confirmada');
@@ -237,6 +272,37 @@
                 return $this->redirectToRoute('detalle_subasta', ['id'=>$id]);
             }
             
+        }
+        #[Route('/subasta/{id}/eliminar/{id_com}', name: 'eliminar_comentario', methods: ['GET','POST'] ) ]
+        public function eliminarComentario(int $id, int $id_com, EntityManagerInterface $em, Request $request): Response { 
+            $usuario = $this->getUser();
+
+            // Buscar la subasta
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+            if (!$subasta) {
+                $this->addFlash('error', 'Subasta no encontrada.');
+                return $this->redirectToRoute('listar_subastas');
+            }
+
+            // Verificar que el usuario sea el vendedor
+            if ($subasta->getVendedor()->getId() !== $usuario->getId()) {
+                $this->addFlash('error', 'No tenés permiso para eliminar comentarios en esta subasta.');
+                return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+            }
+
+            // Buscar el comentario
+            $comentario = $em->getRepository(Comentario::class)->find($id_com);
+            if (!$comentario || $comentario->getSubasta()->getId() !== $id) {
+                $this->addFlash('error', 'Comentario no válido.');
+                return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+            }
+
+            // Eliminar el comentario
+            $em->remove($comentario);
+            $em->flush();
+
+            $this->addFlash('success', 'Comentario eliminado correctamente.');
+            return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
         }
 
 }

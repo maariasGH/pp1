@@ -5,6 +5,16 @@
     {% endblock %}
     {% block body %}   
         <main>
+            <div class="busqueda-wrapper">
+                <form method="get" action="{{ path('listar_subastas') }}" class="busqueda-header" style="float: right;">
+                    <input type="text" name="q" placeholder="Buscar subastas..." value="{{ app.request.get('q') }}">
+                    <button type="submit">🔍</button>
+                </form>
+                {% for message in app.flashes('publicada') %}
+                    <div class="flash-success">{{ message }}</div>
+                {% endfor %}
+            </div>
+            
             <h2 class="title">Lista de Subastas</h2>
 
             <div class="subastas">

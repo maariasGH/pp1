@@ -32,16 +32,20 @@
                             Estado: {{ subasta.estado.value }} <br>
                             {% if subasta.estado.value == 'activa' %}
                                 Finaliza: {{ subasta.duracion|date('d/m/Y H:i') }}
+                                {% if subasta.OfertaParcialGanadora == 0 %}
+                                    <p><strong>Todavia no hay ofertas.</strong></p>
+                                {% else %}
+                                    <p><strong>Oferta Ganadora Hasta el Momento:</strong> {{ subasta.OfertaParcialGanadora }}$</p>
+                                {% endif %}
+                            {% endif %}
+                            {% if subasta.estado.value == 'finalizada' %}
+                                <p><strong>Oferta Ganadora:</strong> {{ subasta.OfertaFinalGanadora }}$</p>
                             {% endif %}
                         </p>
                     </div>
                     <div class="botones_gestion">
                         <a href="{{ path('detalle_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-info">Ver Detalle</a>
-                        <a href="{{ path('editar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-primary">Editar</a>
-                        <a href="{{ path('eliminar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-danger"
-                           onclick="return confirm('¿Seguro que deseas eliminar esta subasta?');">
-                           Eliminar
-                        </a>
+                        
                         
                         {% if subasta.estado.value == 'pausada' %}
                             <a href="{{ path('reanudar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-success">Reanudar</a>
@@ -51,16 +55,23 @@
                         <a href="{{ path('pausar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-warning">Pausar</a>
                         {% endif %}
                         {% if subasta.estado.value != 'finalizada' %}
-                        <a href="{{ path('confirmar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-success">Confirmar</a>
+                        <a href="{{ path('editar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{{ path('eliminar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Seguro que deseas eliminar esta subasta?');">
+                           Eliminar
+                        </a> 
+                        <a href="{{ path('confirmar_subasta', {id: subasta.id}) }}" class="btn btn-sm btn-success" onclick="return confirm('¿Seguro que deseas confirmar esta subasta?');">Confirmar</a>
                         {% endif %}
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="alert alert-info">No tienes subastas creadas.</div>
+        <div class="alert alert-info" style="display: flex; align-items: center;">
+            <p style="margin: auto;">No tenes subastas creadas.</p>
+        </div>
     {% endif %}
-
+    <br>    
     <div class="bt-volver-container">
          <div class="bt-volver">
             <a href="{{ path('listar_subastas') }}">Volver al Menú</a>
