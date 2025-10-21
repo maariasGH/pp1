@@ -53,11 +53,11 @@ class Subasta
 
     
     #[ORM\ManyToOne(targetEntity: Usuario::class)]
-    #[ORM\JoinColumn(nullable: false)] // si quieres que sea obligatorio
+    #[ORM\JoinColumn(nullable: false)]
     private ?Usuario $vendedor = null;
 
     #[ORM\ManyToOne(targetEntity: Usuario::class)]
-    #[ORM\JoinColumn(nullable: true)] // si quieres que sea obligatorio
+    #[ORM\JoinColumn(nullable: true)]
     private ?Usuario $ganador = null;
 
     public function __construct()

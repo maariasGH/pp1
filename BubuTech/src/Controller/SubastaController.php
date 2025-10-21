@@ -243,6 +243,7 @@
             $vendedor->setDineroGanado($subasta->getOfertaFinalGanadora());
             if ($subasta->getGanador()) {
                 $compradorGanador = $subasta->getGanador();
+                $compradorGanador->setDineroGastado($subasta->getOfertaFinalGanadora());
                 $compradorGanador->setCantidadSubastasGanadas(1);
             }
             
@@ -276,7 +277,7 @@
         #[Route('/subasta/{id}/eliminar/{id_com}', name: 'eliminar_comentario', methods: ['GET','POST'] ) ]
         public function eliminarComentario(int $id, int $id_com, EntityManagerInterface $em, Request $request): Response { 
             $usuario = $this->getUser();
-
+            $comentario = $em->getRepository(Comentario::class)->find($id_com);
             // Buscar la subasta
             $subasta = $em->getRepository(Subasta::class)->find($id);
             if (!$subasta) {
@@ -285,13 +286,13 @@
             }
 
             // Verificar que el usuario sea el vendedor
-            if ($subasta->getVendedor()->getId() !== $usuario->getId()) {
+            if ($subasta->getVendedor()->getId() !== $usuario->getId() && $comentario->getComentador()->getId() !== $usuario->getId() ) {
                 $this->addFlash('error', 'No tenés permiso para eliminar comentarios en esta subasta.');
                 return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
             }
 
             // Buscar el comentario
-            $comentario = $em->getRepository(Comentario::class)->find($id_com);
+            
             if (!$comentario || $comentario->getSubasta()->getId() !== $id) {
                 $this->addFlash('error', 'Comentario no válido.');
                 return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
