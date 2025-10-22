@@ -54,7 +54,7 @@ class EstadisticaController extends AbstractController
         $subastas = $subastaManager->getSubastasPorVendedor($usuario);
 
         // Total ganado
-        $totalGanado = array_reduce($subastas, fn($carry, $subasta) => $carry + ($subasta->getOfertaFinalGanadora() ?? 0), 0);
+        $totalGanado = $usuario->getDineroGanado();
 
         // Oferta máxima entre todas las subastas
         $ofertaMaxima = $ofertaManager->getOfertaMaximaDeSubastas($subastas);

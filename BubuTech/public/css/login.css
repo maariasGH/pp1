@@ -102,4 +102,27 @@ form a img {
     width: 55%;
     height: 50%;
 }
+.flash-success {
+    background: #e3f6e9;
+    color: #1b5e20;
+    border-left: 6px solid #2e7d32;
+}
+
+.flash-error {
+    background: #fdecea;
+    color: #b71c1c;
+    border-left: 6px solid #d32f2f;
+}
+
+.flash-warning {
+    background: #fff8e1;
+    color: #7f6000;
+    border-left: 6px solid #ffb300;
+}
+
+.flash-info {
+    background: #eaf3ff;
+    color: #0d47a1;
+    border-left: 6px solid #1565c0;
+}
 

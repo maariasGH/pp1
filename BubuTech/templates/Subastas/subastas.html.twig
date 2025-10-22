@@ -32,7 +32,7 @@
                             <p class="descripcion">{{ subasta.producto.descripcion }}</p>
                             <p><strong>Precio base:</strong> ${{ subasta.precioBase }}</p>
                             <p><strong>Categoría:</strong> {{ subasta.categoria ?? 'Sin categoría' }}</p>
-                            <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
+                            <p><strong>Estado: {{ subasta.estado.value|upper }}</strong> </p>
                             {% if subasta.estado.value == 'activa' %}
                                 <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>
                             {% endif %}

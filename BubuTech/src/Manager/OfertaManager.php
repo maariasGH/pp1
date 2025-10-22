@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Oferta;
 use App\Entity\Subasta;
 use App\Repository\OfertaRepository;
+use App\Enum\EstadoSubasta;
 
 class OfertaManager
 {
@@ -30,7 +31,7 @@ class OfertaManager
     }
 
     /**
-     * Devuelve la oferta con mayor monto entre varias subastas
+     * Devuelve la oferta con mayor monto entre las subastas finalizadas del vendedor
      * Útil para la estadística del vendedor
      */
     public function getOfertaMaximaDeSubastas(array $subastas): ?Oferta
@@ -40,8 +41,11 @@ class OfertaManager
         }
 
         return $this->ofertaRepository->createQueryBuilder('o')
-            ->where('o.subasta IN (:subastas)')
+            ->join('o.subasta', 's')
+            ->where('s IN (:subastas)')
+            ->andWhere('s.Estado = :Estado')
             ->setParameter('subastas', $subastas)
+            ->setParameter('Estado', EstadoSubasta::FINALIZADA)
             ->orderBy('o.Monto', 'DESC')
             ->setMaxResults(1)
             ->getQuery()

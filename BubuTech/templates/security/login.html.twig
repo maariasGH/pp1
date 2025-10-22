@@ -2,7 +2,11 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 {% endblock %}
 {% block body %}
+    
     <form action="{{ path('app_login') }}" method="post">
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
     <a href=" {{ path('app_login') }} ">
         <img src="{{ asset('images/sprite pagina azul.png') }}" alt="BubuTech logo">
     </a>

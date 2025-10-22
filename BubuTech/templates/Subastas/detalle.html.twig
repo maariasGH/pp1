@@ -29,7 +29,7 @@
             <h3>{{ subasta.producto.nombre }}</h3>
             <p><strong>Descripción:</strong> {{ subasta.producto.descripcion }}</p>
             <p><strong>Precio Inicial:</strong> ${{ subasta.precioBase }}</p>
-            <p><strong>Estado:</strong> {{ subasta.estado.value }}</p>
+            <p><strong>Estado: {{ subasta.estado.value|upper }}</strong> </p>
             
             {% if subasta.estado.value == 'activa' and usuario is not same as(subasta.vendedor) %}
                 <p><strong>Finaliza:</strong> {{ subasta.duracion|date('d/m/Y H:i') }}</p>

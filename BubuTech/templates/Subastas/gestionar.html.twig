@@ -29,7 +29,7 @@
                         <h5>{{ subasta.producto.nombre }}</h5>
                         <p class="mb-1">
                             Precio base: ${{ subasta.precioBase }} <br>
-                            Estado: {{ subasta.estado.value }} <br>
+                            Estado: <strong>{{ subasta.estado.value|upper }}</strong> <br>
                             {% if subasta.estado.value == 'activa' %}
                                 Finaliza: {{ subasta.duracion|date('d/m/Y H:i') }}
                                 {% if subasta.OfertaParcialGanadora == 0 %}

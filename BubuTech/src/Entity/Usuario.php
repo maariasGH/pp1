@@ -328,7 +328,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function setSubastaMasCara(float $monto) {
-        $this->subastaMasCara=$this->subastaMasCara+$monto;
+        $this->subastaMasCara=$monto;
         return $this;
     }
 

@@ -69,6 +69,7 @@
                 $monto = (float) $request->request->get('monto');
 
                 if ($monto > 0) {
+                    $user->addRol('ROLE_COMPRADOR');
                     $oferta = new Oferta();
                     $oferta->setMonto($monto);
                     $oferta->setFecha(new \DateTime());
@@ -241,10 +242,18 @@
             $subasta->setEstado(EstadoSubasta::FINALIZADA);
             $subasta->setOfertaFinalGanadora($subasta->getOfertaParcialGanadora());
             $vendedor->setDineroGanado($subasta->getOfertaFinalGanadora());
+            $ofertaGanadora = $em->getRepository(Oferta::class)->findOneBy([
+                'Monto' => $subasta->getOfertaFinalGanadora(),
+                'subasta' => $subasta
+            ]);
+            $subasta->setGanador($ofertaGanadora->getOfertante());
             if ($subasta->getGanador()) {
                 $compradorGanador = $subasta->getGanador();
                 $compradorGanador->setDineroGastado($subasta->getOfertaFinalGanadora());
                 $compradorGanador->setCantidadSubastasGanadas(1);
+                if ($compradorGanador->getSubastaMasCara() < $subasta->getOfertaFinalGanadora()) {
+                    $compradorGanador->setSubastaMasCara($subasta->getOfertaFinalGanadora());
+                }
             }
             
 
