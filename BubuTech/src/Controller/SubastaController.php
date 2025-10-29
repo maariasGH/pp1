@@ -64,6 +64,23 @@
 
             $user = $this->getUser(); 
 
+            // traer comentarios ya hechos
+            $comentarios = $em->getRepository(Comentario::class)->findBy(
+                ['subasta' => $subasta],
+                ['Fecha' => 'DESC']
+            );
+            
+            return $this->render('Subastas/detalle.html.twig', [
+                'subasta' => $subasta,
+                'comentarios' => $comentarios,
+                'usuario' => $this->getUser(),
+            ]);
+        }
+
+        #[Route('/subasta/ofertar/{id}', name: 'ofertar', methods: ['POST'])]
+        public function ofertar(int $id, Request $request, EntityManagerInterface $em): Response {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+            $user=$this->getUser();
             // Procedimiento para registrar la Oferta
             if ($request->request->has('monto')) {
                 $monto = (float) $request->request->get('monto');
@@ -75,7 +92,8 @@
                     $oferta->setFecha(new \DateTime());
                     $oferta->setOfertante($user);
                     $oferta->setSubasta($subasta);
-                    $user->setDineroGastado($monto);
+                    
+                    //Estadisticas de Usuario
                     if ($user->getSubastaMasCara()<$monto) {
                         $user->setSubastaMasCara($monto);
                     }
@@ -85,7 +103,6 @@
                         $this->addFlash('error', 'La oferta debe ser mayor al precio base o a la oferta parcialmente ganadora');
                     } else {
                         $subasta->setOfertaParcialGanadora($monto);
-                        $subasta->setGanador($user);
                         $em->persist($oferta);
                         $em->flush();
                         $this->addFlash('success', 'Oferta realizada con éxito');
@@ -93,7 +110,13 @@
                     }
                 }
             }
+            return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
+        }
 
+        #[Route('/subasta/comentar/{id}', name: 'comentar', methods: ['POST'])]
+        public function comentar(int $id, Request $request, EntityManagerInterface $em): Response {
+            $subasta = $em->getRepository(Subasta::class)->find($id);
+            $user=$this->getUser();
             // Proceso para realizar comentarios
             if ($request->request->has('comentario')) {
                 $texto = trim($request->request->get('comentario'));
@@ -113,23 +136,14 @@
                         return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
                     } else {
                         $this->addFlash('error', 'El comentario debe tener entre 3 y 300 caracteres');
+                        return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
                     } 
                 } else {
                     $this->addFlash('info', 'El comentario no puede estar vacio');
+                    return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
                 }
             }
-
-            // traer comentarios ya hechos
-            $comentarios = $em->getRepository(Comentario::class)->findBy(
-                ['subasta' => $subasta],
-                ['Fecha' => 'DESC']
-            );
-            
-            return $this->render('Subastas/detalle.html.twig', [
-                'subasta' => $subasta,
-                'comentarios' => $comentarios,
-                'usuario' => $this->getUser(),
-            ]);
+            return $this->redirectToRoute('detalle_subasta', ['id' => $id]);
         }
 
         #[Route('/gestionar-subastas', name: 'gestionar_subastas')]
@@ -247,6 +261,7 @@
                 'subasta' => $subasta
             ]);
             $subasta->setGanador($ofertaGanadora->getOfertante());
+            //Estadisticas de Usuario
             if ($subasta->getGanador()) {
                 $compradorGanador = $subasta->getGanador();
                 $compradorGanador->setDineroGastado($subasta->getOfertaFinalGanadora());
